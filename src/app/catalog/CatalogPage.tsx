@@ -1,56 +1,41 @@
-"use client"
+'use client';
+import React, { useState } from 'react';
+import ProductFilter from '@/components/ProductFilter'; 
+import ProductCard from '@/components/ProductCard'; 
+import Spinner from '@/components/Spinner'; 
+import 'tailwindcss/tailwind.css'; 
+import useProducts from '@/hooks/useProducts'; 
+import Header from '@/components/Header';
 
-import Image from "next/image";
-import { useState } from "react";
+const HomePage: React.FC = () => {
+  const [filterQuery, setFilterQuery] = useState<string>('');
+  const { filteredProducts, loading, error } = useProducts(filterQuery);
 
-type Product = {
-    id: number;
-    name: string;
-    price: number;
-    image: string;
-  };
-
-const products: Product[] = [
-    { id: 1, name: "Silla de Madera", price: 50, image: "/products/silla.jpg" },
-    { id: 2, name: "Mesa de Centro", price: 120, image: "/products/mesa.jpg" },
-    { id: 3, name: "Estante Moderno", price: 200, image: "/products/estante.jpg" },
-  ];
-
-const CatalogPage = () => {
-
-    const [cart, setCart] = useState<Product[]>([]);
-
-    const addToCart = (product: Product) => {
-        setCart([...cart, product]);
-        alert(`"${product.name}" agregado al carrito`);
-      };
+  if (loading) return <Spinner />;
+  if (error) return <p className="text-red-500 text-center p-4">{error}</p>;
 
   return (
-    <main className="p-6">
-      <h1 className="text-3xl font-bold text-center mb-6">Catálogo de Productos</h1>
-      <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
-        {products.map((product) => (
-          <div key={product.id} className="border rounded-lg p-4 shadow-lg">
-            <Image 
-              src={product.image} 
-              alt={product.name} 
-              width={300} 
-              height={200} 
-              className="w-full h-auto rounded-lg"
-            />
-            <h2 className="text-xl font-semibold mt-4">{product.name}</h2>
-            <p className="text-gray-600">${product.price}</p>
-            <button 
-              className="mt-2 bg-blue-500 text-white px-4 py-2 rounded hover:bg-blue-600"
-              onClick={() => addToCart(product)}
-            >
-              Agregar al Carrito
-            </button>
-          </div>
-        ))}
-      </div>
-    </main>
-  )
-}
+    <div className="min-h-screen flex flex-col bg-gray-100">
+      <main className="flex-1 container mx-auto px-4 py-6">
+        <Header/>
 
-export default CatalogPage
+        <ProductFilter onFilter={setFilterQuery} />
+
+        <div className="grid grid-cols-2 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4">
+          {filteredProducts.length > 0 ? (
+            filteredProducts.map(product => (
+              <ProductCard
+                key={product.id} 
+                product={product} 
+              />
+            ))
+          ) : (
+            <p className="col-span-full text-center text-gray-500">No se encontraron productos</p>
+          )}
+        </div>
+      </main>
+    </div>
+  );
+};
+
+export default HomePage;
