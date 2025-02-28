@@ -19,3 +19,19 @@ export async function POST(req: Request) {
     return NextResponse.json({ message: "Error al crear el producto", error }, { status: 500 });
   }
 }
+
+
+export async function GET() {
+  try {
+    await connectDB();
+    const products = await Product.find();
+    return NextResponse.json(products, { status: 200 });
+  } catch (error: any) {
+    console.error("Error al obtener productos:", error);
+    return NextResponse.json(
+      { message: "Error al obtener productos", error: error.message },
+      { status: 500 }
+    );
+  }
+}
+
