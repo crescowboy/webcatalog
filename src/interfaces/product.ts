@@ -1,7 +1,7 @@
 // Define la interfaz para los productos
 export interface Product {
-    id: number;
-    title: string;
+    _id: string;
+    name: string;
     price: number;
     image: string;
     category: string;

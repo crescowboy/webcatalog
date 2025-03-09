@@ -8,7 +8,7 @@ const ProductCard: React.FC<ProductCardProps> = ({ product }) => {
   const router = useRouter(); 
 
   const handleCardClick = () => {
-    router.push(`/products/${product.id}`);
+    router.push(`/products/${product._id}`);
   };
 
   return (
@@ -19,7 +19,7 @@ const ProductCard: React.FC<ProductCardProps> = ({ product }) => {
       <div className="relative overflow-hidden rounded-md mb-2 h-64">
         <Image
           src={product.image}
-          alt={product.title}
+          alt={product.name}
           fill 
           sizes="(max-width: 640px) 100vw, (max-width: 768px) 50vw, 33vw" 
           style={{ objectFit: 'contain' }} 
@@ -29,7 +29,7 @@ const ProductCard: React.FC<ProductCardProps> = ({ product }) => {
       </div>
       
       <div className="flex flex-col flex-grow">
-        <h2 className="text-lg font-semibold mb-2 line-clamp-2">{product.title}</h2>
+        <h2 className="text-lg font-semibold mb-2 line-clamp-2">{product.name}</h2>
         <p className="text-xl font-semibold text-gray-600 mb-4">${product.price.toFixed(2)}</p>
       </div>
     </div>

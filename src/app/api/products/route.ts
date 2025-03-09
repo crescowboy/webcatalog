@@ -39,3 +39,17 @@ export async function POST(req: Request) {
     );
   }
 }
+
+export async function GET() {
+  try {
+    await connectDB();
+    const products = await Product.find();
+    return NextResponse.json(products, { status: 200 });
+  } catch (error: unknown) {
+    console.error("Error al obtener los productos:", error);
+    return NextResponse.json(
+      { message: "Error al obtener los productos", error: error instanceof Error ? error.message : "Error desconocido" },
+      { status: 500 }
+    );
+  }
+}

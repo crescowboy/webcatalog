@@ -13,6 +13,7 @@ const HomePage: React.FC = () => {
 
   if (loading) return <Spinner />;
   if (error) return <p className="text-red-500 text-center p-4">{error}</p>;
+  console.log(filteredProducts);
 
   return (
     <div className="min-h-screen flex flex-col bg-gray-100">
@@ -25,7 +26,7 @@ const HomePage: React.FC = () => {
           {filteredProducts.length > 0 ? (
             filteredProducts.map(product => (
               <ProductCard
-                key={product.id} 
+                key={product._id} 
                 product={product} 
               />
             ))

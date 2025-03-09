@@ -1,5 +1,4 @@
 import { useState, useEffect } from 'react';
-import { fetchProductsFromAPI } from '@/services/api';
 import { Product } from '@/interfaces/product';
 
 const useProducts = (filterQuery: string) => {
@@ -11,7 +10,11 @@ const useProducts = (filterQuery: string) => {
   useEffect(() => {
     const fetchProducts = async () => {
       try {
-        const data = await fetchProductsFromAPI();
+        const response = await fetch('/api/products');
+        if (!response.ok) {
+          throw new Error('Failed to fetch products');
+        }
+        const data = await response.json();
         setProducts(data);
         setFilteredProducts(data);
       } catch (error) {
@@ -23,7 +26,7 @@ const useProducts = (filterQuery: string) => {
     };
 
     fetchProducts();
-  }, []); // Dependencia vacía para ejecutar solo una vez al montar el componente
+  }, []); 
 
   useEffect(() => {
     const filterProducts = () => {
@@ -32,7 +35,7 @@ const useProducts = (filterQuery: string) => {
       } else {
         const lowerCaseQuery = filterQuery.toLowerCase();
         const filtered = products.filter(product =>
-          product.title.toLowerCase().includes(lowerCaseQuery)
+          product.name.toLowerCase().includes(lowerCaseQuery)
         );
         setFilteredProducts(filtered);
       }
