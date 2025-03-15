@@ -1,5 +1,4 @@
 import { useState, useEffect } from 'react';
-import { fetchProductsFromAPI } from '@/services/api'; 
 
 interface Product {
   id: number;
@@ -28,8 +27,12 @@ export const useProduct = (productId: string | undefined) => {
           return;
         }
 
-        const data = await fetchProductsFromAPI();
-        const productData = data.find((item: Product) => item.id === Number(productId));
+        const response = await fetch(`/api/products/${productId}`);
+        if (!response.ok) {
+          throw new Error('Failed to fetch product');
+        }
+
+        const productData = await response.json();
         
         if (!productData) {
           setError('Product not found');
