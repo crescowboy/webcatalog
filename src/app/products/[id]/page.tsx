@@ -14,7 +14,6 @@ const ProductPage: React.FC = () => {
   const { product, loading, error } = useProduct(productId);
 
   const [selectedColor, setSelectedColor] = useState<string | null>(null);
-  const [selectedSize, setSelectedSize] = useState<string | null>(null);
 
   if (loading) return <Spinner />;
 
@@ -35,14 +34,13 @@ const ProductPage: React.FC = () => {
       <main className="w-full max-w-6xl px-4 py-6">
         <div className="flex flex-col lg:flex-row">
           <div className="lg:w-1/2 flex justify-center items-center p-4">
-            <ZoomableImage src={product?.image ?? '/default-image.jpg'} alt={product?.title ?? 'Product image'} />
+            <ZoomableImage src={product?.image ?? '/default-image.jpg'} alt={product?.name ?? 'Product image'} />
           </div>
 
           <div className="lg:w-1/2 p-6 flex flex-col justify-between">
             <div>
-              <h1 className="text-2xl md:text-3xl font-bold mb-2">{product?.title}</h1>
+              <h1 className="text-2xl md:text-3xl font-bold mb-2">{product?.name}</h1>
               <p className="text-xl font-bold text-gray-900 mb-2">${product?.price.toFixed(2)}</p>
-              <p className="text-base mb-4">{product?.description}</p>
 
               {isClothingCategory && (
                 <>
@@ -59,20 +57,7 @@ const ProductPage: React.FC = () => {
                     </div>
                   </div>
 
-                  <div className="mt-6">
-                    <p className="text-lg font-semibold mb-2">Size:</p>
-                    <div className="flex flex-wrap gap-1">
-                      {['Small', 'Medium', 'Large', 'X-Large', 'XX-Large'].map((size) => (
-                        <button
-                          key={size}
-                          onClick={() => setSelectedSize(size)}
-                          className={`border rounded-lg px-4 py-2 flex-1 min-w-[90px] text-center ${selectedSize === size ? 'bg-gray-200' : ''}`}
-                        >
-                          {size}
-                        </button>
-                      ))}
-                    </div>
-                  </div>
+
                 </>
               )}
             </div>

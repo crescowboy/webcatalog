@@ -2,7 +2,7 @@ import { useState, useEffect } from 'react';
 
 interface Product {
   id: number;
-  title: string;
+  name: string;
   price: number;
   image: string;
   description: string;
